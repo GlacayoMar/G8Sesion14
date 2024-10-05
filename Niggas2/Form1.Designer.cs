@@ -148,6 +148,7 @@
             this.btnRead.TabIndex = 10;
             this.btnRead.Text = "Leer";
             this.btnRead.UseVisualStyleBackColor = true;
+            this.btnRead.Click += new System.EventHandler(this.btnRead_Click);
             // 
             // btnSave
             // 

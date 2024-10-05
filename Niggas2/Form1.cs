@@ -97,5 +97,36 @@ namespace Niggas2
                 MessageBox.Show("Debe agregar exactamente 3 personas antes de guardar.");
             }
         }
+
+        private void btnRead_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Archivos binarios (*.dat)|*.dat";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                using (FileStream mArchivoLector = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read))
+                using (BinaryReader lector = new BinaryReader(mArchivoLector))
+                {
+                    listapersonas.Clear();
+                    dgvPersons.Rows.Clear();
+
+                    while (mArchivoLector.Position != mArchivoLector.Length) 
+                    {
+                        int length = lector.ReadInt32(); // Leemos la longitud del nombre
+                        char[] nombreArray = lector.ReadChars(length); // Leemos el nombre
+                        string nombre = new string(nombreArray); // Convertimos a string
+                        int edad = lector.ReadInt32();
+                        int nota = lector.ReadInt32();
+                        char genero = lector.ReadChar();
+
+                        Persona persona = new Persona(nombre, edad, nota, genero);
+                        listapersonas.Add(persona);
+                    }
+                }
+
+                MessageBox.Show("Datos cargados correctamente");
+            }
+        }
     }
 }
